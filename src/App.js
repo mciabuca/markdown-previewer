@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import './App.css';
 
+marked.setOptions({
+  gfm: true,
+  breaks: true
+});
 const App = () => {
   const [markdown, setMarkdown] = useState(initialMarkdown);
 
@@ -10,8 +15,12 @@ const App = () => {
   };
 
   const getMarkdownText = () => {
-    var rawMarkup = marked.parse(markdown, {sanitize: true, breaks: true});
-    return { __html: rawMarkup };
+    console.log('markdown:', markdown);
+    var rawMarkup = marked.parse(markdown, { breaks: true });
+    console.log('rawMarkup:', rawMarkup);
+    var cleanMarkup = DOMPurify.sanitize(rawMarkup);
+    console.log('cleanMarkup:', cleanMarkup);
+    return { __html: cleanMarkup };
   };
 
   return (
@@ -33,32 +42,71 @@ const Preview = ({ markdown }) => (
 );
 
 const initialMarkdown = `
-# Welcome to My Markdown Previewer!
+# Welcome to the Markdown Previewer!
 
-## This is a Subheading
+## Experience Markdown
+Markdown is a *lightweight markup language* that you can use to add formatting elements to plaintext text documents. Created by **John Gruber** in 2004, Markdown is now one of the world's most popular markup languages.
 
-Here's a link to [freeCodeCamp](https://www.freecodecamp.org).
+### What can you do with Markdown?
+- Write articles
+- Draft emails
+- Create documentation
 
-Inline code can be written within backticks, like this: \`<div></div>\`.
+Here's a quick demonstration:
+
+Inline code is indicated with backticks, like this: \`<div></div>\`.
 
 \`\`\`
 // This is a code block:
-function exampleFunction() {
-  console.log('Hello, World!');
+function greet() {
+  console.log('Hello, Markdown!');
 }
 \`\`\`
 
-- This is a list item
+### Text Elements
+Italics: *Asterisks* or _underscores_.
+Bold: **Double asterisks** or __double underscores__.
+Strikethrough: ~~Tildes~~.
 
-> This is a blockquote.
+### Lists
+Unordered list:
+- Item 1
+- Item 2
+  - Subitem 2.1
+  - Subitem 2.2
 
-![Image](https://via.placeholder.com/150 "Placeholder Image")
+Ordered list:
+1. First item
+2. Second item
+3. Third item
 
-**This is bold text!**
+### Links and Images
+Here's a link to [freeCodeCamp](https://www.freecodecamp.org), an open-source community where you can learn to code for free.
 
-*This is italic text!*
+Embedding images is easy: 
+![Markdown Logo](https://via.placeholder.com/50x50 "Markdown Logo")
 
-You can **_combine_** them.
+### Blockquotes
+> Markdown is a writer's best friend.
+> 
+> **— Someone famous**
+
+### Tables
+Create tables by aligning columns with hyphens and pipes:
+
+| Syntax    | Description |
+|-----------|-------------|
+| Header    | Title       |
+| Paragraph | Text        |
+
+
+You can even use emojis 😄 and **HTML** tags!
+
+---
+
+Markdown is simple, yet powerful. Explore and enjoy!
+
+*Created with love for Markdown enthusiasts.*
 `;
 
 export default App;
