@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { marked } from 'marked';
+import './App.css';
 
 const App = () => {
   const [markdown, setMarkdown] = useState(initialMarkdown);
@@ -14,8 +15,10 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="App">
+      <div className="container-title">Markdown Editor</div>
       <Editor markdown={markdown} onChange={handleChange} />
+      <div className="container-title">Preview</div>
       <Preview markdown={getMarkdownText()} />
     </div>
   );
